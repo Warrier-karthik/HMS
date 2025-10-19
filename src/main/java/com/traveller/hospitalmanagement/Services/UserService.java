@@ -5,6 +5,7 @@ import com.traveller.hospitalmanagement.Models.Doctor;
 import com.traveller.hospitalmanagement.Models.User;
 import com.traveller.hospitalmanagement.Repository.DoctorRepository;
 import com.traveller.hospitalmanagement.Repository.UserRepository;
+import com.traveller.hospitalmanagement.dto.LoginDTO;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLOutput;
@@ -45,5 +46,17 @@ public class UserService {
     }
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
+    }
+
+    public String authenticate(LoginDTO loginDTO) {
+
+        String hashedPassword = userRepository.getpasswordByuserName(loginDTO.getUsername());
+        if (hashedPassword.isEmpty()) {
+            return "Invalid username or password";
+        }
+        if (securityConfig.passwordEncoder().matches(loginDTO.getPassword(), hashedPassword)) {
+            return "login successful";
+        }
+        return "login failed";
     }
 }
