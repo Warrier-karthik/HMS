@@ -18,15 +18,17 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private final JwtService jwtService;
     UserRepository userRepository;
     DoctorRepository doctorRepository;
     SecurityConfig securityConfig;
     AuthenticationManager authenticationManager;
-    public UserService(UserRepository userRepository, SecurityConfig securityConfig, DoctorRepository doctorRepository, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, SecurityConfig securityConfig, DoctorRepository doctorRepository, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepository = userRepository;
         this.securityConfig = securityConfig;
         this.doctorRepository = doctorRepository;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public void createUser(User user) {
@@ -64,7 +66,7 @@ public class UserService {
                     )
             );
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            return STR."login successful\{customUserDetails.getUsername()}";
+            return jwtService.generateToken(customUserDetails.getUsername(), customUserDetails.getUser_type());
         } catch(BadCredentialsException e) {
             return  "Incorrect username or password";
         }
