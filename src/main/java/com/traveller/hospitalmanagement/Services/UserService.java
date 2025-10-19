@@ -1,11 +1,16 @@
 package com.traveller.hospitalmanagement.Services;
 
 import com.traveller.hospitalmanagement.Config.SecurityConfig;
+import com.traveller.hospitalmanagement.Models.CustomUserDetails;
 import com.traveller.hospitalmanagement.Models.Doctor;
 import com.traveller.hospitalmanagement.Models.User;
 import com.traveller.hospitalmanagement.Repository.DoctorRepository;
 import com.traveller.hospitalmanagement.Repository.UserRepository;
 import com.traveller.hospitalmanagement.dto.LoginDTO;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLOutput;
@@ -16,10 +21,12 @@ public class UserService {
     UserRepository userRepository;
     DoctorRepository doctorRepository;
     SecurityConfig securityConfig;
-    public UserService(UserRepository userRepository, SecurityConfig securityConfig, DoctorRepository doctorRepository) {
+    AuthenticationManager authenticationManager;
+    public UserService(UserRepository userRepository, SecurityConfig securityConfig, DoctorRepository doctorRepository, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.securityConfig = securityConfig;
         this.doctorRepository = doctorRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     public void createUser(User user) {
@@ -49,14 +56,18 @@ public class UserService {
     }
 
     public String authenticate(LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginDTO.getUsername(),
+                            loginDTO.getPassword()
+                    )
+            );
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            return STR."login successful\{customUserDetails.getUsername()}";
+        } catch(BadCredentialsException e) {
+            return  "Incorrect username or password";
+        }
 
-        String hashedPassword = userRepository.getpasswordByuserName(loginDTO.getUsername());
-        if (hashedPassword.isEmpty()) {
-            return "Invalid username or password";
-        }
-        if (securityConfig.passwordEncoder().matches(loginDTO.getPassword(), hashedPassword)) {
-            return "login successful";
-        }
-        return "login failed";
     }
 }
