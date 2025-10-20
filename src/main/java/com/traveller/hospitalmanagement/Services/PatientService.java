@@ -30,5 +30,8 @@ public class PatientService {
     public Patient getPatientById(int id) {
         return patientRepository.getPatientById(id);
     }
+    public  Patient getPatientByName(String name) {
+        return patientRepository.getPatientByName(name);
+    }
 
 }

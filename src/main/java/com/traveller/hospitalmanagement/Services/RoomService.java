@@ -25,4 +25,7 @@ public class RoomService {
     public List<Room> filterRooms(RoomFilter roomFilter){
         return roomRepository.find(roomFilter);
     }
+    public Room getRoom(int room_number) {
+        return roomRepository.getRoom(room_number);
+    }
 }

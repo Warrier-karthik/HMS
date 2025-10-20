@@ -23,11 +23,15 @@ public class DoctorService {
         return doctorRepository.getDoctorById(id);
     }
 
+
     public List<Doctor> getDoctor(String type, String value) {
         return switch (type.toLowerCase()) {
             case "name" -> doctorRepository.getDoctorwithName(value);
             case "dept" -> doctorRepository.getDoctorwithDept(value);
             default -> List.of();
         };
+    }
+    public Doctor getDoctorByName(String name) {
+        return doctorRepository.getDoctorByName(name);
     }
 }

@@ -19,7 +19,7 @@ public class DoctorRepository {
         doctor.setLastName(rs.getString("last_name"));
 
         doctor.setStatus(rs.getString("status"));
-        doctor.setUser_id(rs.getInt("user_id"));
+        doctor.setUser_id(rs.getInt("doctor_id"));
         return doctor;
     };
 
@@ -35,6 +35,11 @@ public class DoctorRepository {
     public Doctor getDoctorById(int id) {
         String sql = "select * from doctors where doctor_id=?";
         return jdbcTemplate.queryForObject(sql, doctorRowMapper, id);
+    }
+
+    public Doctor getDoctorByName(String name) {
+        String sql = "select * from doctors where first_name=? or last_name=?";
+        return jdbcTemplate.queryForObject(sql, doctorRowMapper, name, name);
     }
     public List<Doctor> getDoctorwithName(String name) {
         String sql = "select * from doctors where first_name=? or last_name=?";

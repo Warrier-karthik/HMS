@@ -5,6 +5,7 @@ package com.traveller.hospitalmanagement.Controllers;
 import com.traveller.hospitalmanagement.Models.Appointment;
 import com.traveller.hospitalmanagement.Services.AppointmentService;
 import com.traveller.hospitalmanagement.dto.AppointmentDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,9 +23,9 @@ public class AppointmentController {
     public List<AppointmentDTO> getAllAppointments() {
         return appointmentService.getAllAppointments();
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/appointment/setAppointment")
-    public int setAppointment(@RequestBody Appointment appointment) {
+    public int setAppointment(@RequestBody AppointmentDTO appointment) {
         return appointmentService.addAppointment(appointment);
     }
 }

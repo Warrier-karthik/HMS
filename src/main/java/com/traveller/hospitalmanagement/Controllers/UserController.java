@@ -4,6 +4,7 @@ import com.traveller.hospitalmanagement.Models.User;
 import com.traveller.hospitalmanagement.Services.UserService;
 import com.traveller.hospitalmanagement.dto.LoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PostMapping("/user/create")
     public void createUser(@RequestBody User user) {
         userService.createUser(user);

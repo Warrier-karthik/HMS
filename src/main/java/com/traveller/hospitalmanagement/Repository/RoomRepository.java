@@ -17,6 +17,7 @@ public class RoomRepository {
     }
     private final RowMapper<Room> rowMapper = (rs, rowNum) -> {
         Room room = new Room();
+        room.setRoom_id(rs.getInt("room_id"));
         room.setRoom_number(rs.getInt("room_number"));
         room.setRoom_type(rs.getString("room_type"));
         room.setFloor(rs.getInt("floor"));
@@ -33,6 +34,11 @@ public class RoomRepository {
         String sql = "select * from rooms";
         return jdbcTemplate.query(sql, rowMapper);
 
+    }
+    public Room getRoom(int room_number) {
+        System.out.println(STR."getting room number \{room_number}");
+        String sql = STR."select * from rooms where room_number = ?";
+        return jdbcTemplate.queryForObject(sql, rowMapper, room_number);
     }
     public List<Room> find(RoomFilter roomFilter) {
         StringBuilder sql = new StringBuilder("select * from rooms where 1=1");

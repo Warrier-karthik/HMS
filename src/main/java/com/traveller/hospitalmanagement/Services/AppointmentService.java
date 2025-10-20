@@ -40,7 +40,14 @@ public class AppointmentService {
         }
         return newAppointments;
     }
-    public int addAppointment(Appointment appointment) {
+    public int addAppointment(AppointmentDTO appointmentDTO) {
+        Appointment appointment = new Appointment();
+        Doctor doctor = doctorService.getDoctorByName(appointmentDTO.getDoctorName());
+        Patient patient = patientService.getPatientByName(appointmentDTO.getPatientName());
+        appointment.setDoctor_id(doctor.getUser_id());
+        appointment.setDate(appointmentDTO.getDate());
+        appointment.setTime(appointmentDTO.getTime());
+        appointment.setPatient_id(patient.getId());
         return appointmentRepository.addAppointment(appointment);
     }
 }

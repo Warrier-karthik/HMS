@@ -3,10 +3,19 @@ package com.traveller.hospitalmanagement.Models;
 
 
 public class Room {
+    private int room_id;
     private int room_number;
     private int floor;
     private String room_type;
     private String status;
+
+    public int getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(int room_id) {
+        this.room_id = room_id;
+    }
 
     public int getRoom_number() {
         return room_number;

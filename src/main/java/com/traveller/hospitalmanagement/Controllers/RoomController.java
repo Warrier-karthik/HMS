@@ -4,6 +4,7 @@ package com.traveller.hospitalmanagement.Controllers;
 import com.traveller.hospitalmanagement.Models.Room;
 import com.traveller.hospitalmanagement.Services.RoomService;
 import com.traveller.hospitalmanagement.dto.RoomFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class RoomController {
     public List<Room> getAllRooms(){
         return roomService.getAllRooms();
     }
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/room/createRoom")
     public int createRoom(@RequestBody Room room){
         return roomService.createRoom(room);

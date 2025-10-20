@@ -47,5 +47,9 @@ public class PatientRepository {
         String sql = "select * from patients where patient_id = ?";
         return jdbcTemplate.queryForObject(sql, patientRowMapper, id);
     }
+    public Patient getPatientByName(String name) {
+        String sql = "select * from patients where first_name = ? or last_name = ?";
+        return jdbcTemplate.queryForObject(sql, patientRowMapper, name, name);
+    }
 }
 
