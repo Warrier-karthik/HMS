@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class RoomController {
     RoomService roomService;
     public RoomController(RoomService roomService) {
